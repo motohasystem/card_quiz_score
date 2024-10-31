@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Card Quiz Score App</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      max-width: 800px;
+      margin: auto;
+    }
+    .question {
+      margin-bottom: 20px;
+    }
+    .card-label {
+      display: inline-block;
+      width: 60px;
+      height: 80px;
+      border: 1px solid #000;
+      border-radius: 10px;
+      text-align: center;
+      line-height: 80px;
+      margin: 5px;
+      background-color: white;
+      box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+      cursor: pointer;
+      transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s;
+    }
+    .card-label:hover {
+      transform: scale(1.1);
+    }
+    input[type="radio"] {
+      display: none;
+    }
+    input[type="radio"]:checked + .card-label {
+      background-color: #007bff;
+      color: white;
+      box-shadow: 0 0 15px #007bff;
+      transform: scale(1.1);
+    }
+  </style>
+</head>
+<body>
+  <h1>Answer 20 Questions in Card Style and Calculate Your Score</h1>
+  <form id="quizForm">
+    <div id="questions"></div>
+    <button type="button" onclick="calculateScore()">スコアを集計する</button>
+  </form>
+  <h2 id="totalScore"></h2>
+
+  <script>
+    // 設問のデータを作成する
+    const questions = [
+      "設問 1: サンプル質問内容",
+      "設問 2: サンプル質問内容",
+      "設問 3: サンプル質問内容",
+      "設問 4: サンプル質問内容",
+      "設問 5: サンプル質問内容",
+      "設問 6: サンプル質問内容",
+      "設問 7: サンプル質問内容",
+      "設問 8: サンプル質問内容",
+      "設問 9: サンプル質問内容",
+      "設問 10: サンプル質問内容",
+      "設問 11: サンプル質問内容",
+      "設問 12: サンプル質問内容",
+      "設問 13: サンプル質問内容",
+      "設問 14: サンプル質問内容",
+      "設問 15: サンプル質問内容",
+      "設問 16: サンプル質問内容",
+      "設問 17: サンプル質問内容",
+      "設問 18: サンプル質問内容",
+      "設問 19: サンプル質問内容",
+      "設問 20: サンプル質問内容"
+    ];
+
+    // 質問を生成する関数
+    function generateQuestions() {
+      const questionsContainer = document.getElementById('questions');
+      questions.forEach((question, index) => {
+        const questionDiv = document.createElement('div');
+        questionDiv.classList.add('question');
+
+        // 質問テキスト
+        const questionText = document.createElement('p');
+        questionText.textContent = question;
+        questionDiv.appendChild(questionText);
+
+        // ラジオボタンの選択肢 (1〜5点)
+        for (let i = 1; i <= 5; i++) {
+          const inputId = `question${index}_option${i}`;
+          const radio = document.createElement('input');
+          radio.type = 'radio';
+          radio.id = inputId;
+          radio.name = `question${index}`;
+          radio.value = i;
+
+          const label = document.createElement('label');
+          label.classList.add('card-label');
+          label.htmlFor = inputId;
+          label.textContent = i;
+
+          const labelWrapper = document.createElement('label');
+          labelWrapper.appendChild(radio);
+          labelWrapper.appendChild(label);
+          questionDiv.appendChild(labelWrapper);
+        }
+
+        questionsContainer.appendChild(questionDiv);
+      });
+    }
+
+    // スコアを計算する関数
+    function calculateScore() {
+      let totalScore = 0;
+      for (let i = 0; i < questions.length; i++) {
+        const radios = document.getElementsByName(`question${i}`);
+        for (const radio of radios) {
+          if (radio.checked) {
+            totalScore += parseInt(radio.value);
+            break;
+          }
+        }
+      }
+      document.getElementById('totalScore').textContent = `合計スコア: ${totalScore}`;
+    }
+
+    // ページ読み込み時に質問を生成
+    window.onload = generateQuestions;
+  </script>
+</body>
+</html>
